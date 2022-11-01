@@ -1,5 +1,5 @@
 {
-  "name": "my-module",
+  "name": "nuxt-cookie-session",
   "version": "1.0.0",
   "license": "MIT",
   "type": "module",

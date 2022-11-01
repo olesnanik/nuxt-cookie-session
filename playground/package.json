@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "my-module-playground",
+  "name": "nuxt-cookie-session-playground",
   "dependencies": {
     "nanoid": "^4.0.0"
   }
