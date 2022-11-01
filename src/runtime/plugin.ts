@@ -1,5 +1,5 @@
 import type { HTTPMethod } from 'h3'
-import { defineNuxtPlugin, useRequestEvent } from '#app'
+import { defineNuxtPlugin, useRequestEvent, useRuntimeConfig } from '#app'
 import { ref } from 'vue'
 import type { CookieSessionData } from '../types'
 
@@ -7,14 +7,20 @@ export default defineNuxtPlugin(() => {
   const event = useRequestEvent()
   const data = ref(event?.context.cookieSession?.data ?? {})
 
+  const { cookieSession: { api: { enable, path } } } = useRuntimeConfig()
   const handleRequestAndUpdateData = async (_request: () => ReturnType<typeof request>) => {
+    if (!enable) {
+      console.error('api option is not enabled')
+      return Promise.resolve({})
+    }
+
     data.value = await _request()
     return data.value
   }
 
-  const getData = () => handleRequestAndUpdateData(request)
-  const patchData = (newData: Partial<CookieSessionData>) => handleRequestAndUpdateData(() => request('PATCH', newData))
-  const putData = (newData: Partial<CookieSessionData>) => handleRequestAndUpdateData(() => request('PUT', newData))
+  const getData = () => handleRequestAndUpdateData(() => request(path))
+  const patchData = (newData: Partial<CookieSessionData>) => handleRequestAndUpdateData(() => request(path, 'PATCH', newData))
+  const putData = (newData: Partial<CookieSessionData>) => handleRequestAndUpdateData(() => request(path, 'PUT', newData))
 
   return {
     provide: {
@@ -24,17 +30,12 @@ export default defineNuxtPlugin(() => {
 })
 
 function request (
+  path: string,
   method: Extract<HTTPMethod, 'GET' | 'PATCH' | 'PUT'> = 'GET',
   body?: Pick<Parameters<typeof $fetch>[1], 'body'>
 ): Promise<CookieSessionData> {
   const event = useRequestEvent()
   const cookie = event?.req.headers?.cookie
-
-  const { api: { enable, path } } = useCookieSessionRuntimeConfig()
-  if (!enable) {
-    console.error('api option is not enabled')
-    return Promise.resolve({})
-  }
 
   return $fetch(path, { method, body, headers: { cookie } })
 }

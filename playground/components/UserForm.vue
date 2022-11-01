@@ -7,10 +7,13 @@
 </template>
 
 <script setup>
-const { data, updateData } = useCookieSession()
+import { computed, ref } from 'vue'
+import { useCookieSession } from '../../src/runtime/composables/useCookieSession'
+
+const { data, patchData } = useCookieSession()
 const userData = computed(() => data.value.user)
 const firstname = ref(userData.value?.firstname ?? '')
 const age = ref(userData.value?.age ?? 0)
 
-const onSubmit = () => updateData({ user: { firstname: firstname.value, age: age.value } })
+const onSubmit = () => patchData({ user: { firstname: firstname.value, age: age.value } })
 </script>

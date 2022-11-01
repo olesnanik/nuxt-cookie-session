@@ -5,15 +5,7 @@ export default defineNuxtConfig({
   modules: [
     [
       CookieSessionModule,
-      {
-        secret: 'secret',
-        access: {
-          mode: 'api'
-        },
-        storage: {
-          id: 'my-storage'
-        }
-      }
+      {}
     ]
   ]
 })
