@@ -12,7 +12,10 @@ export default defineEventHandler(async (event: H3Event) => {
 
   let cookieId = await getCookieIdByEvent(event)
   if (cookieId) {
-    const storageValue = (await storage.getItem(cookieId)) as CookieSessionStorageValue
+    const [storageValue] = await Promise.all([
+      storage.getItem(cookieId) as CookieSessionStorageValue,
+      setCookieIdByEvent(event, cookieId)
+    ])
     if (storageValue) {
       data.value = storageValue
     }

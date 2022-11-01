@@ -45,6 +45,23 @@ describe('default', async () => {
 
       expect(cookieVal).toStrictEqual(getExpectedCookiesByOptions(name, cookie))
     })
+
+    it('Cookie should not be regenerated for multiple requests.', async () => {
+      const { name } = getDefaultModuleOptions()
+      const { headers: resHeaders1 } = await fetch(
+        DEFAULT_API_PATH,
+        { method: 'PATCH', body: { name: 'John Doe' } }
+      )
+      const cookie1 = parseCookie(resHeaders1.get('set-cookie'))[name]
+
+      const { headers: resHeaders2 } = await fetch(
+        DEFAULT_API_PATH,
+        { method: 'PATCH', body: { name: 'John Doe 2' }, headers: { cookie: resHeaders1.get('set-cookie') } }
+      )
+      const cookie2 = parseCookie(resHeaders2.get('set-cookie'))[name]
+
+      expect(cookie1).toEqual(cookie2)
+    })
   })
 
   describe('api', () => {
