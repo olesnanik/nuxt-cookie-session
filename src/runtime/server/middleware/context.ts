@@ -1,4 +1,4 @@
-import { H3Event, setCookie, parseCookies, defineEventHandler } from 'h3'
+import { H3Event, setCookie, parseCookies, defineEventHandler, deleteCookie } from 'h3'
 import { nanoid } from 'nanoid'
 import { ref } from 'vue'
 import type { CookieSessionData, CookieSessionStorageValue } from '../../../types'
@@ -35,10 +35,19 @@ export default defineEventHandler(async (event: H3Event) => {
 
   const updateData = (newData: Partial<CookieSessionData>) => setData({ ...data.value, ...newData })
 
+  const deleteSession = async () => {
+    data.value = null
+    await Promise.all([
+      storage.removeItem(cookieId),
+      deleteCookieByEvent(event)
+    ])
+  }
+
   event.context.cookieSession = {
     data,
     setData,
-    updateData
+    updateData,
+    deleteSession
   }
 
   event.res.on('finish', async () => {
@@ -71,4 +80,9 @@ async function setCookieIdByEvent (event: H3Event, cookieId: string): Promise<vo
   const { name, secret, genid: { prefix }, cookie } = useCookieSessionRuntimeConfig()
 
   return setCookie(event, name, await signCookieId(cookieId, secret, prefix), cookie)
+}
+
+async function deleteCookieByEvent (event: H3Event): Promise<void> {
+  const { name, cookie } = useCookieSessionRuntimeConfig()
+  await deleteCookie(event, name, cookie)
 }

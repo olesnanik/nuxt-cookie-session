@@ -11,6 +11,7 @@ export type CookieSessionContext = {
   data: Ref<CookieSessionData>
   setData: (newData: CookieSessionData) => Promise<void>
   updateData: (newData: Partial<CookieSessionData>) => Promise<void>
+  deleteSession: () => Promise<void>
 }
 
 declare module 'h3' {

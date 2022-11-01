@@ -4,5 +4,5 @@ import { useCookieSessionStorage } from '../../../composables/useStorage'
 export default defineEventHandler((event) => {
   const key = getRouterParams(event).key
 
-  return useCookieSessionStorage().getItem(key) ?? {}
+  return useCookieSessionStorage().getItem(key) ?? null
 })

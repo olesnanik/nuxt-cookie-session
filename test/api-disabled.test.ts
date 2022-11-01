@@ -39,6 +39,11 @@ describe('api disabled', async () => {
       const { headers } = await fetch(DEFAULT_API_PATH, { method: 'PUT' })
       expect(headers.get('content-type')).not.toEqual('application/json')
     })
+
+    it('DELETE api should not be accessible.', async () => {
+      const { headers } = await fetch(DEFAULT_API_PATH, { method: 'DELETE' })
+      expect(headers.get('set-cookie')).toEqual(null)
+    })
   })
 
   describe('pages', () => {

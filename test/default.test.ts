@@ -1,8 +1,9 @@
 import { fileURLToPath } from 'node:url'
-import { parse as parseCookie } from 'es-cookie'
+import { parse as parseCookie, encode as encodeCookie } from 'es-cookie'
 import { describe, it, expect } from 'vitest'
 import { setup, fetch, $fetch } from '@nuxt/test-utils-edge'
 import { DEFAULT_API_PATH, getDefaultModuleOptions } from '../src/config'
+import { signCookieId } from '../src/runtime/server/utils/signature'
 import CookieSessionModule from '..'
 import { getExpectedCookiesByOptions } from './util/cookie'
 
@@ -62,6 +63,21 @@ describe('default', async () => {
 
       expect(cookie1).toEqual(cookie2)
     })
+
+    it('Cookie should be deleted for DELETE request.', async () => {
+      const { headers: resHeaders1 } = await fetch(
+        DEFAULT_API_PATH,
+        { method: 'PATCH', body: { name: 'John Doe' } }
+      )
+
+      const { headers: resHeaders2 } = await fetch(
+        DEFAULT_API_PATH,
+        { method: 'DELETE', headers: { cookie: resHeaders1.get('set-cookie') } }
+      )
+      const cookie = parseCookie(resHeaders2.get('set-cookie'))
+
+      expect(cookie['Max-Age']).toStrictEqual('0')
+    })
   })
 
   describe('api', () => {
@@ -78,6 +94,11 @@ describe('default', async () => {
     it('PUT api should be accessible by default.', async () => {
       const { headers } = await fetch(DEFAULT_API_PATH, { method: 'PUT' })
       expect(headers.get('content-type')).toEqual('application/json')
+    })
+
+    it('DELETE api should be accessible by default.', async () => {
+      const { status } = await fetch(DEFAULT_API_PATH, { method: 'DELETE' })
+      expect(status).toMatch(/^2[0-9]{2}$/)
     })
 
     it('Data from PATCH api should be accessible by GET api.', async () => {
@@ -108,6 +129,20 @@ describe('default', async () => {
       const getData = await $fetch(DEFAULT_API_PATH, { method: 'GET', headers: { cookie } })
 
       expect(getData).toEqual(putData)
+    })
+
+    it('DELETE request should delete session data.', async () => {
+      const cookieId = 'cookie-id'
+      await $fetch('/api/cookie-session/storage/' + cookieId, { method: 'POST', body: { data: 'John Doe' } })
+
+      const { secret, genid: { prefix }, name } = getDefaultModuleOptions()
+      const signedCookieId = await signCookieId(cookieId, secret, prefix)
+      const headers = { cookie: encodeCookie(name, signedCookieId, {}) }
+
+      await $fetch(DEFAULT_API_PATH, { method: 'DELETE', headers })
+
+      const storageValue = await $fetch('/api/cookie-session/storage/' + cookieId, { headers })
+      expect(storageValue).toBeFalsy()
     })
   })
 
