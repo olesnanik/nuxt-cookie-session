@@ -71,6 +71,22 @@ describe('default', async () => {
 
       expect(getData).toEqual(patchData)
     })
+
+    it('Data from PUT requet should replace all existing data.', async () => {
+      const { headers: patchResHeaders } = await fetch(
+        DEFAULT_API_PATH,
+        { method: 'PATCH', body: JSON.stringify({ name: 'John Doe' }) }
+      )
+      const cookie = patchResHeaders.get('set-cookie')
+      const putData = { anotherName: 'John Another Doe' }
+      await $fetch(
+        DEFAULT_API_PATH,
+        { method: 'PUT', body: putData, headers: { cookie } }
+      )
+      const getData = await $fetch(DEFAULT_API_PATH, { method: 'GET', headers: { cookie } })
+
+      expect(getData).toEqual(putData)
+    })
   })
 
   describe('pages', () => {

@@ -7,25 +7,24 @@ export default defineNuxtPlugin(() => {
   const event = useRequestEvent()
   const data = ref(event?.context.cookieSession?.data ?? {})
 
-  const updateData = async (newData: Partial<CookieSessionData>) => {
-    data.value = await request('PATCH', newData)
+  const handleRequestAndUpdateData = async (_request: () => ReturnType<typeof request>) => {
+    data.value = await _request()
     return data.value
   }
 
-  const fetchData = async () => {
-    data.value = await request()
-    return data.value
-  }
+  const getData = () => handleRequestAndUpdateData(request)
+  const patchData = (newData: Partial<CookieSessionData>) => handleRequestAndUpdateData(() => request('PATCH', newData))
+  const putData = (newData: Partial<CookieSessionData>) => handleRequestAndUpdateData(() => request('PUT', newData))
 
   return {
     provide: {
-      cookieSession: { data, updateData, fetchData }
+      cookieSession: { data, patchData, getData, putData }
     }
   }
 })
 
 function request (
-  method: Extract<HTTPMethod, 'GET' | 'PATCH'> = 'GET',
+  method: Extract<HTTPMethod, 'GET' | 'PATCH' | 'PUT'> = 'GET',
   body?: Pick<Parameters<typeof $fetch>[1], 'body'>
 ): Promise<CookieSessionData> {
   const event = useRequestEvent()

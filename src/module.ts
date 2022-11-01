@@ -40,7 +40,7 @@ export default defineNuxtModule<ModuleOptions>({
     addImportsDir(resolve(runtimeDir, 'composables'))
 
     if (options.api.enable) {
-      ['GET', 'PATCH'].map(method => addServerHandler({
+      ['GET', 'PATCH', 'PUT'].map(method => addServerHandler({
         handler: resolve(runtimeDir, 'server/api/cookie-session.' + method.toLowerCase()),
         route: options.api.path
       }))
