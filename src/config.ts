@@ -1,0 +1,31 @@
+import { AccessModes, CookieSessionRuntimeConfig } from './types'
+
+export const DEFAULT_API_PATH = '/api/cookie-session'
+
+export function getDefaultModuleOptions (): CookieSessionRuntimeConfig {
+  return {
+    secret: 'default-secret',
+    genid: {
+      length: 21,
+      prefix: 's:'
+    },
+    name: 'cookieSessionId',
+    access: {
+      mode: AccessModes.serverOnly
+    },
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict'
+    },
+    storage: {
+      id: 'cookie-session'
+    }
+  }
+}
+
+export const CONFIG_KEY = 'cookieSession'
+
+export const LOG_MESSAGES = {
+  defaultSecret: `Cookie session module is using the default secret for signing of cookie ids. Custom randomly generated secret should be used to obtain better security. The option should be configured at \`{ ${CONFIG_KEY}: { secret: "your secret goes here" } }\``
+}

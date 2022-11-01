@@ -1,0 +1,45 @@
+{
+  "name": "my-module",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepack": "nuxt-module-build",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "test": "pnpm vitest run --threads false --watch false",
+    "lint": "eslint --ext .ts,.vue --max-warnings=0 .",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.0.0-rc.12",
+    "defu": "^6.1.0",
+    "h3": "^0.8.5",
+    "nanoid": "^4.0.0",
+    "unstorage": "^0.6.0"
+  },
+  "devDependencies": {
+    "@nuxt/module-builder": "^0.2.0",
+    "@nuxt/schema": "^3.0.0-rc.12",
+    "@nuxt/test-utils-edge": "3.0.0-rc.13-27772354.a0a59e2",
+    "@nuxtjs/eslint-config-typescript": "^11.0.0",
+    "es-cookie": "^1.4.0",
+    "eslint": "^8.25.0",
+    "nuxt": "^3.0.0-rc.12",
+    "typescript": "^4.8.4",
+    "vitest": "^0.24.3",
+    "vue": "^3.2.41"
+  }
+}
