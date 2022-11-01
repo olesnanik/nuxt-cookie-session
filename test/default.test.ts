@@ -75,6 +75,11 @@ describe('default', async () => {
       expect(headers.get('content-type')).toEqual('application/json')
     })
 
+    it('PUT api should be accessible by default.', async () => {
+      const { headers } = await fetch(DEFAULT_API_PATH, { method: 'PUT' })
+      expect(headers.get('content-type')).toEqual('application/json')
+    })
+
     it('Data from PATCH api should be accessible by GET api.', async () => {
       const patchData = { name: 'John Doe' }
       const { headers: patchResHeaders } = await fetch(
