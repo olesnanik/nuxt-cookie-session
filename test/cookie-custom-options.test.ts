@@ -7,7 +7,7 @@ import type { CookieOptions } from '../src/types'
 import CookieSessionModule from '..'
 import { getExpectedCookiesByOptions } from './util/cookie'
 
-describe('api access mode and cookie', async () => {
+describe('cookie custom options', async () => {
   const cookieOptions: CookieOptions = {
     domain: 'localhost',
     path: '/test-path',
@@ -25,9 +25,6 @@ describe('api access mode and cookie', async () => {
           // @ts-ignore
           CookieSessionModule,
           {
-            access: {
-              mode: 'api'
-            },
             cookie: cookieOptions
           }
         ]

@@ -4,7 +4,7 @@ import { setup, fetch } from '@nuxt/test-utils-edge'
 import { DEFAULT_API_PATH } from '../src/config'
 import CookieSessionModule from '..'
 
-describe('api access mode + custom path', async () => {
+describe('api custom path', async () => {
   await setup({
     rootDir: fileURLToPath(new URL('./fixture', import.meta.url)),
     // @ts-ignore nuxt version conflict
@@ -14,11 +14,8 @@ describe('api access mode + custom path', async () => {
           // @ts-ignore
           CookieSessionModule,
           {
-            access: {
-              mode: 'api',
-              api: {
-                path: '/api/custom-cookie-session-path'
-              }
+            api: {
+              path: '/api/custom-cookie-session-path'
             }
           }
         ]

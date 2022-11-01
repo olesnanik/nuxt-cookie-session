@@ -16,11 +16,7 @@ describe('storage prefix', async () => {
           CookieSessionModule,
           {
             storage: {
-              id: 'custom-storage',
-              keyPrefix: 'prefix'
-            },
-            access: {
-              mode: 'api'
+              keyPrefix: 'test-prefix'
             }
           }
         ]
@@ -29,13 +25,15 @@ describe('storage prefix', async () => {
   })
 
   describe('api', () => {
-    it('GET api should return value of the prefixed storage key.', async () => {
-      const cookieId = 'cookie-id'
+    it('Storage key should be prefixed by "keyPrefix" storage option.', async () => {
       const { secret, genid: { prefix }, name } = getDefaultModuleOptions()
-      const signedCookieId = await signCookieId(cookieId, secret, prefix)
+      const signedCookieId = await signCookieId('cookie-id', secret, prefix)
+      const cookie = encodeCookie(name, signedCookieId, {})
 
-      const jsonRes = await $fetch(DEFAULT_API_PATH, { headers: { cookie: encodeCookie(name, signedCookieId, {}) } })
-      expect(jsonRes).toEqual({ data: 'Mocked data for prefix:cookie-id.' })
+      await $fetch(DEFAULT_API_PATH, { method: 'PATCH', body: { data: 'John Doe' }, headers: { cookie } })
+
+      const storageKeys = await $fetch('/api/cookie-session/storage/keys')
+      expect(storageKeys).toEqual(['test-prefix:cookie-id'])
     })
   })
 })

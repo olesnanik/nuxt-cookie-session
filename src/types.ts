@@ -5,11 +5,7 @@ export type CookieSessionData = {
   [key: string]: any
 }
 
-export type CookieSessionMeta = Pick<Parameters<typeof setCookie>[3], 'secure' | 'httpOnly' | 'domain' | 'path' | 'sameSite' | 'expires'> & {
-  originalMaxAge?: number
-}
-
-export type CookieSessionStorageValue = (CookieSessionData & { cookie: CookieSessionMeta }) | null
+export type CookieSessionStorageValue = CookieSessionData | null
 
 export type CookieSessionContext = {
   data: Ref<CookieSessionData>
@@ -22,23 +18,6 @@ declare module 'h3' {
     cookieSession?: CookieSessionContext
   }
 }
-
-export enum AccessModes {
-  serverOnly = 'server-only',
-  clientPayload = 'client-payload',
-  api = 'api'
-}
-
-export type RuntimeApiAccessOptions = {
-  mode: AccessModes.api,
-  api: {
-    path: string
-  }
-}
-
-type RuntimeAccessOptions = {
-  mode: AccessModes.serverOnly | AccessModes.clientPayload
-} | RuntimeApiAccessOptions
 
 export type CookieOptions = Pick<Parameters<typeof setCookie>[3], 'domain' | 'httpOnly' | 'maxAge' | 'path' | 'sameSite' | 'secure'>
 
@@ -54,9 +33,12 @@ export type CookieSessionRuntimeConfig = {
     prefix: string
   }
   name: string
-  access: RuntimeAccessOptions
+  api: {
+    enable: boolean
+    path: string
+  }
   cookie: Required<Pick<CookieOptions, 'httpOnly' | 'secure' | 'sameSite'>> & Omit<CookieOptions, 'httpOnly' | 'secure' | 'sameSite'>
-  storage?: StorageOptions
+  storage: StorageOptions
 }
 
 declare module '@nuxt/schema' {
@@ -65,9 +47,7 @@ declare module '@nuxt/schema' {
   }
 
   interface PublicRuntimeConfig {
-    cookieSession: {
-      access: RuntimeAccessOptions
-    }
+    cookieSession: Pick<CookieSessionRuntimeConfig, 'api'>
   }
 }
 
@@ -78,13 +58,9 @@ export type ModuleOptions = {
     length?: number
     prefix?: string
   }
-  access?: {
-    mode?: AccessModes.serverOnly | AccessModes.clientPayload
-  } | {
-    mode?: AccessModes.api,
-    api?: {
-      path?: string
-    }
+  api?: {
+    enable?: boolean
+    path?: string
   }
   storage?: StorageOptions
   cookie?: CookieOptions

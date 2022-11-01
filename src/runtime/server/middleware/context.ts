@@ -1,34 +1,19 @@
 import { H3Event, setCookie, parseCookies, defineEventHandler } from 'h3'
 import { nanoid } from 'nanoid'
 import { ref } from 'vue'
-import type {
-  CookieSessionData,
-  CookieSessionMeta,
-  CookieSessionStorageValue
-} from '../../../types'
+import type { CookieSessionData, CookieSessionStorageValue } from '../../../types'
 import { unsignCookieId, signCookieId } from '../utils/signature'
 import { useCookieSessionRuntimeConfig } from '../composables/useRuntimeConfig'
 import { useCookieSessionStorage } from '../composables/useStorage'
 
 export default defineEventHandler(async (event: H3Event) => {
   const storage = useCookieSessionStorage()
-  const storageReservedKeys = ['cookie']
-
-  const cookieMeta = ref<CookieSessionMeta>({})
   const data = ref<CookieSessionData>({})
 
   let cookieId = await getCookieIdByEvent(event)
   if (cookieId) {
     const storageValue = (await storage.getItem(cookieId)) as CookieSessionStorageValue
     if (storageValue) {
-      cookieMeta.value = storageValue.cookie ?? {}
-
-      storageReservedKeys.forEach((key) => {
-        if (storageValue[`_${key}`]) {
-          storageValue[key] = storageValue[`_${key}`]
-        }
-        delete storageValue[`_${key}`]
-      })
       data.value = storageValue
     }
   }
@@ -41,12 +26,6 @@ export default defineEventHandler(async (event: H3Event) => {
   }
 
   const setData = async (newData: CookieSessionData) => {
-    Object.keys(newData).forEach((key) => {
-      if (storageReservedKeys.includes(key)) {
-        newData[`_${key}`] = newData[key]
-        delete newData[key]
-      }
-    })
     data.value = newData
     await setCookieIfEmpty()
   }
@@ -64,11 +43,11 @@ export default defineEventHandler(async (event: H3Event) => {
       return
     }
 
-    if (!cookieId) {
+    if (cookieId) {
+      await storage.setItem(cookieId, data.value)
+    } else {
       throw new Error('cookieId has not been set during request')
     }
-    const storageValue: CookieSessionStorageValue = { ...data.value, cookie: cookieMeta.value }
-    await storage.setItem(cookieId, storageValue)
   })
 })
 

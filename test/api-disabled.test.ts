@@ -6,7 +6,7 @@ import { DEFAULT_API_PATH, getDefaultModuleOptions } from '../src/config'
 import { signCookieId } from '../src/runtime/server/utils/signature'
 import CookieSessionModule from '..'
 
-describe('client-payload access mode', async () => {
+describe('api disabled', async () => {
   await setup({
     rootDir: fileURLToPath(new URL('./fixture', import.meta.url)),
     nuxtConfig: {
@@ -15,24 +15,13 @@ describe('client-payload access mode', async () => {
           // @ts-ignore
           CookieSessionModule,
           {
-            access: {
-              mode: 'client-payload'
+            api: {
+              enable: false
             }
           }
         ]
       ]
     }
-  })
-
-  describe('page', () => {
-    it('Data should be included in page payload.', async () => {
-      const cookieId = 'cookie-id'
-      const { secret, genid: { prefix }, name } = getDefaultModuleOptions()
-      const signedCookieId = await signCookieId(cookieId, secret, prefix)
-
-      const html = await $fetch('/', { headers: { cookie: encodeCookie(name, signedCookieId, {}) } })
-      expect(html).toContain('Mocked data for cookie-id.')
-    })
   })
 
   describe('api', () => {
@@ -44,6 +33,19 @@ describe('client-payload access mode', async () => {
     it('PATCH api should not be accessible.', async () => {
       const { headers } = await fetch(DEFAULT_API_PATH, { method: 'PATCH' })
       expect(headers.get('content-type')).not.toEqual('application/json')
+    })
+  })
+
+  describe('pages', () => {
+    it('Data should be rendered on server.', async () => {
+      const cookieId = 'cookie-id'
+      await $fetch('/api/cookie-session/storage/' + cookieId, { method: 'POST', body: { data: 'John Doe' } })
+
+      const { secret, genid: { prefix }, name } = getDefaultModuleOptions()
+      const signedCookieId = await signCookieId(cookieId, secret, prefix)
+
+      const html = await $fetch('/server-rendered-data', { headers: { cookie: encodeCookie(name, signedCookieId, {}) } })
+      expect(html).toContain('John Doe')
     })
   })
 })

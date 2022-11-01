@@ -1,4 +1,4 @@
-import { AccessModes, CookieSessionRuntimeConfig } from './types'
+import { CookieSessionRuntimeConfig } from './types'
 
 export const DEFAULT_API_PATH = '/api/cookie-session'
 
@@ -10,8 +10,9 @@ export function getDefaultModuleOptions (): CookieSessionRuntimeConfig {
       prefix: 's:'
     },
     name: 'cookieSessionId',
-    access: {
-      mode: AccessModes.serverOnly
+    api: {
+      enable: true,
+      path: '/api/cookie-session'
     },
     cookie: {
       httpOnly: true,

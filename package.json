@@ -19,7 +19,7 @@
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "test": "pnpm vitest run --threads false --watch false",
+    "test": "pnpm vitest run --threads false --watch false --segfault-retry=3",
     "lint": "eslint --ext .ts,.vue --max-warnings=0 .",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
