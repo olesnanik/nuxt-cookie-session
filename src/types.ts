@@ -1,7 +1,7 @@
 import type { setCookie } from 'h3'
 import type { Ref } from 'vue'
 
-export type CookieSessionData = {
+export interface CookieSessionData {
   [key: string]: any
 }
 
