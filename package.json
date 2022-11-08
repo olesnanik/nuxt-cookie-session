@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.0.0-rc.12",
+    "@vueuse/core": "^9.4.0",
     "defu": "^6.1.0",
     "h3": "^0.8.5",
     "nanoid": "^4.0.0",

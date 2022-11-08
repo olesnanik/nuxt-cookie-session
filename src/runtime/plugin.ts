@@ -21,17 +21,21 @@ export default defineNuxtPlugin(() => {
   const getData = () => handleRequestAndUpdateData(() => request(path))
   const patchData = (newData: Partial<CookieSessionData>) => handleRequestAndUpdateData(() => request(path, 'PATCH', newData))
   const putData = (newData: Partial<CookieSessionData>) => handleRequestAndUpdateData(() => request(path, 'PUT', newData))
+  const deleteSession = () => handleRequestAndUpdateData(async () => {
+    await request(path, 'DELETE')
+    return {}
+  })
 
   return {
     provide: {
-      cookieSession: { data, patchData, getData, putData }
+      cookieSession: { data, patchData, getData, putData, deleteSession }
     }
   }
 })
 
 function request (
   path: string,
-  method: Extract<HTTPMethod, 'GET' | 'PATCH' | 'PUT'> = 'GET',
+  method: Extract<HTTPMethod, 'GET' | 'PATCH' | 'PUT' | 'DELETE'> = 'GET',
   body?: Pick<Parameters<typeof $fetch>[1], 'body'>
 ): Promise<CookieSessionData> {
   const event = useRequestEvent()
