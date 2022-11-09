@@ -7,7 +7,6 @@ import CookieSessionModule from '..'
 describe('api custom path', async () => {
   await setup({
     rootDir: fileURLToPath(new URL('./fixture', import.meta.url)),
-    // @ts-ignore nuxt version conflict
     nuxtConfig: {
       modules: [
         [
