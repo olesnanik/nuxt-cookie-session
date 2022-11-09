@@ -12,6 +12,8 @@ const props = defineProps({
 
 <template>
   <section class="session-preview">
-    <div class="session-preview__data">{{ data }}</div>
+    <div class="session-preview__data">
+      {{ data }}
+    </div>
   </section>
 </template>

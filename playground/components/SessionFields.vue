@@ -32,17 +32,25 @@ const addNewField = () => {
 
 <template>
   <div class="session-fields">
-    <div class="session-fields__heading">Current fields</div>
+    <div class="session-fields__heading">
+      Current fields
+    </div>
     <div v-for="[id, val] in Object.entries(fieldsLocal)" :key="id" class="session-fields__field">
       <label :for="id" class="session-fields__field__label">{{ id }}: </label>
       <input :id="id" :value="val" type="text" class="session-fields__field__input" @input="updateFieldById(id, $event.target.value)">
-      <button class="session-fields__control" @click="removeFieldById(id)">remove</button>
+      <button class="session-fields__control" @click="removeFieldById(id)">
+        remove
+      </button>
     </div>
-    <div class="session-fields__heading session-fields__heading--controls">Controls</div>
+    <div class="session-fields__heading session-fields__heading--controls">
+      Controls
+    </div>
     <div class="session-fields__field">
       <label for="new-field" class="session-fields__field__label">add field: </label>
-      <input id="new-field" type="text" class="session-fields__field__input" v-model="newFieldId">
-      <button class="session-fields__control" @click="addNewField">add</button>
+      <input id="new-field" v-model="newFieldId" type="text" class="session-fields__field__input">
+      <button class="session-fields__control" @click="addNewField">
+        add
+      </button>
     </div>
   </div>
 </template>

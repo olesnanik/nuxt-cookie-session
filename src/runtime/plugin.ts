@@ -1,7 +1,8 @@
 import type { HTTPMethod } from 'h3'
-import { defineNuxtPlugin, useRequestEvent, useRuntimeConfig } from '#app'
+import { defineNuxtPlugin, useRequestEvent, useRuntimeConfig, showError } from '#app'
 import { ref } from 'vue'
 import type { CookieSessionData } from '../types'
+import { LOG_MESSAGES } from '../config'
 
 export default defineNuxtPlugin(() => {
   const event = useRequestEvent()
@@ -10,7 +11,7 @@ export default defineNuxtPlugin(() => {
   const { cookieSession: { api: { enable, path } } } = useRuntimeConfig()
   const handleRequestAndUpdateData = async (_request: () => ReturnType<typeof request>) => {
     if (!enable) {
-      console.error('api option is not enabled')
+      showError(LOG_MESSAGES.disabledApi)
       return Promise.resolve({})
     }
 
