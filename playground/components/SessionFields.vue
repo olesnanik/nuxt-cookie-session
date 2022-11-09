@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref, PropType } from 'vue'
+import { ref, PropType } from 'vue'
 import { useVModel } from '@vueuse/core'
 
 export type Fields = Record<string, string>

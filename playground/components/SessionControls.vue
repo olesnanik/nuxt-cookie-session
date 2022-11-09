@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineEmits } from 'vue'
 
 defineEmits(['get', 'patch', 'put', 'delete'])
 
