@@ -38,7 +38,7 @@ describe('cookie custom options', async () => {
         DEFAULT_API_PATH,
         { method: 'PATCH', body: JSON.stringify({ name: 'John Doe' }) }
       )
-      const cookieVal = parseCookie(headers.get('set-cookie'))
+      const cookieVal = parseCookie(headers.get('set-cookie') ?? '')
       const { name } = getDefaultModuleOptions()
 
       expect(cookieVal).toStrictEqual(getExpectedCookiesByOptions(name, cookieOptions))

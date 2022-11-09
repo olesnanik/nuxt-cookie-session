@@ -37,10 +37,10 @@ export default defineNuxtPlugin(() => {
 function request (
   path: string,
   method: Extract<HTTPMethod, 'GET' | 'PATCH' | 'PUT' | 'DELETE'> = 'GET',
-  body?: Pick<Parameters<typeof $fetch>[1], 'body'>
+  body?: Record<string, string>
 ): Promise<CookieSessionData> {
   const event = useRequestEvent()
-  const cookie = event?.req.headers?.cookie
+  const cookie = event?.req.headers?.cookie ?? ''
 
   return $fetch(path, { method, body, headers: { cookie } })
 }

@@ -36,7 +36,7 @@ export default defineEventHandler(async (event: H3Event) => {
   const updateData = (newData: Partial<CookieSessionData>) => setData({ ...data.value, ...newData })
 
   const deleteSession = async () => {
-    data.value = null
+    data.value = {}
     await Promise.all([
       storage.removeItem(cookieId),
       deleteCookieByEvent(event)

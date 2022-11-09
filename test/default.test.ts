@@ -29,7 +29,7 @@ describe('default', async () => {
       )
 
       const defaultOptions = getDefaultModuleOptions()
-      const cookieVal = parseCookie(headers.get('set-cookie'))[defaultOptions.name]
+      const cookieVal = parseCookie(headers.get('set-cookie') ?? '')[defaultOptions.name]
       const { prefix, length } = defaultOptions.genid
 
       expect(cookieVal.slice(0, prefix.length)).toEqual(prefix)
@@ -41,7 +41,7 @@ describe('default', async () => {
         DEFAULT_API_PATH,
         { method: 'PATCH', body: JSON.stringify({ name: 'John Doe' }) }
       )
-      const cookieVal = parseCookie(headers.get('set-cookie'))
+      const cookieVal = parseCookie(headers.get('set-cookie') ?? '')
       const { name, cookie } = getDefaultModuleOptions()
 
       expect(cookieVal).toStrictEqual(getExpectedCookiesByOptions(name, cookie))
@@ -53,13 +53,13 @@ describe('default', async () => {
         DEFAULT_API_PATH,
         { method: 'PATCH', body: { name: 'John Doe' } }
       )
-      const cookie1 = parseCookie(resHeaders1.get('set-cookie'))[name]
+      const cookie1 = parseCookie(resHeaders1.get('set-cookie') ?? '')[name]
 
       const { headers: resHeaders2 } = await fetch(
         DEFAULT_API_PATH,
         { method: 'PATCH', body: { name: 'John Doe 2' }, headers: { cookie: resHeaders1.get('set-cookie') } }
       )
-      const cookie2 = parseCookie(resHeaders2.get('set-cookie'))[name]
+      const cookie2 = parseCookie(resHeaders2.get('set-cookie') ?? '')[name]
 
       expect(cookie1).toEqual(cookie2)
     })
@@ -74,7 +74,7 @@ describe('default', async () => {
         DEFAULT_API_PATH,
         { method: 'DELETE', headers: { cookie: resHeaders1.get('set-cookie') } }
       )
-      const cookie = parseCookie(resHeaders2.get('set-cookie'))
+      const cookie = parseCookie(resHeaders2.get('set-cookie') ?? '')
 
       expect(cookie['Max-Age']).toStrictEqual('0')
     })
@@ -109,7 +109,7 @@ describe('default', async () => {
       )
       const getData = await $fetch(
         DEFAULT_API_PATH,
-        { method: 'GET', headers: { cookie: patchResHeaders.get('set-cookie') } }
+        { method: 'GET', headers: { cookie: patchResHeaders.get('set-cookie') ?? '' } }
       )
 
       expect(getData).toEqual(patchData)
@@ -120,7 +120,7 @@ describe('default', async () => {
         DEFAULT_API_PATH,
         { method: 'PATCH', body: JSON.stringify({ name: 'John Doe' }) }
       )
-      const cookie = patchResHeaders.get('set-cookie')
+      const cookie = patchResHeaders.get('set-cookie') ?? ''
       const putData = { anotherName: 'John Another Doe' }
       await $fetch(
         DEFAULT_API_PATH,
@@ -153,7 +153,7 @@ describe('default', async () => {
         DEFAULT_API_PATH,
         { method: 'PATCH', body: JSON.stringify(patchData) }
       )
-      const html = await $fetch('/server-rendered-data', { headers: { cookie: patchResHeaders.get('set-cookie') } })
+      const html = await $fetch('/server-rendered-data', { headers: { cookie: patchResHeaders.get('set-cookie') ?? '' } })
 
       expect(html).toContain('John Doe')
     })
