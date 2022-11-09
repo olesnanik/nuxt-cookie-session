@@ -9,7 +9,6 @@ Cookie is the simplest way for storing of user's data in the browser. Whereas, i
 
 -  Configurable all [cookie options](https://github.com/jshttp/cookie#options-1)
 - Public custom API endpoints
-- Strongly typed
 - All storage options available
 - Protected ids
 
