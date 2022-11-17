@@ -79,6 +79,46 @@ const onSubmit = () => patchData({ username: username.value })
 |**cookie.domain**|`string`|`''`|Domain where cookie is available.|
 |**cookie.sameSite**|`string` \| `boolean`|`'Strict'`|Rule for cookie usage defined in [MDN docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite).|
 |**cookie.secure**|`boolean`|`true`|Whether cookie is accessible throught `https` only.|
+
+## HTTP API
+- all session manipulation on the client side are made throught HTTP calls
+
+### PUT
+- replaces all session data by new ones
+- creates new session if it doesn't exist
+```
+// session: { name: 'John Doe', age: 35 }
+
+PUT /api/cookie-session { name: 'Another John Doe' }
+
+// session: { name: 'Another John Doe' }
+```
+
+### PATCH
+- updates existing session data, create new ones if needed
+- creates new session if it doesn't exist
+```
+// session: { name: 'John Doe' }
+
+PATCH /api/cookie-session { name: 'Another John Doe', age: 35 }
+
+// session: { name: 'Another John Doe', age: 35 }
+```
+
+### DELETE
+- deletes cookie and all data stored in the storage
+```
+// session: { name: 'John Doe' }
+
+DELETE /api/cookie-session
+
+// session: {}
+```
+
+### GET
+- returns all session data
+- does nothing if there is no existing session
+
 ## Development
 
 - Run `pnpm dev:prepare` to generate type stubs.
