@@ -38,7 +38,7 @@ export default defineEventHandler(async (event: H3Event) => {
   const deleteSession = async () => {
     data.value = {}
     await Promise.all([
-      storage.removeItem(cookieId),
+      cookieId && storage.removeItem(cookieId),
       deleteCookieByEvent(event)
     ])
   }
