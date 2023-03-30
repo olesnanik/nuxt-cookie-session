@@ -115,7 +115,7 @@ describe('default', async () => {
       expect(getData).toEqual(patchData)
     })
 
-    it('Data from PUT requet should replace all existing data.', async () => {
+    it('Data from PUT request should replace all existing data.', async () => {
       const { headers: patchResHeaders } = await fetch(
         DEFAULT_API_PATH,
         { method: 'PATCH', body: JSON.stringify({ name: 'John Doe' }) }
