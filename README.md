@@ -28,6 +28,7 @@ yarn add nuxt-cookie-session
 ```
 
 ## Configuration
+### Basic
 Add module to the nuxt config and define module options under `cookieSession` property.
 ```ts
 // `nuxt.config`
@@ -40,6 +41,34 @@ export default defineNuxtConfig({
   }
 })
 ```
+
+### Custom storage
+```ts
+// `nuxt.config`
+export default defineNuxtConfig({
+  modules: ['nuxt-cookie-session'],
+
+  cookieSession: {
+    secret: 'randomly-generated-secret',
+    storage: {
+      id: 'custom-redis-storage',
+      keyPrefix: 'my-store-prefix' // optional prefix for all keys stored in the storage
+    }
+  },
+  nitro: {
+    storage: {
+      'custom-redis-storage': {
+        // available drivers are listed at https://unstorage.unjs.io/
+        driver: 'redis',
+        host: '127.0.0.1',
+        // redis driver options
+      }
+    }
+  }
+})
+```
+
+You can find more examples in the [test directory](./test).
 
 ## Usage
 Use cookie session composable in the component.
