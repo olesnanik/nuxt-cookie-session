@@ -8,7 +8,10 @@ import { CONFIG_KEY, getDefaultModuleOptions, LOG_MESSAGES } from './config'
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'cookie-session',
-    configKey: CONFIG_KEY
+    configKey: CONFIG_KEY,
+    compatibility: {
+      nuxt: '^3.0.0'
+    }
   },
   defaults: getDefaultModuleOptions(),
   setup (options, nuxt) {
