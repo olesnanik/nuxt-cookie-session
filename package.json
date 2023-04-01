@@ -1,6 +1,6 @@
 {
   "name": "nuxt-cookie-session",
-  "version": "1.0.0-alpha-2",
+  "version": "1.0.0",
   "description": "Nuxt module for storing of user data on server identified by hashed id in cookies.",
   "repository": "https://github.com/olesnanik/nuxt-cookie-session",
   "license": "MIT",
