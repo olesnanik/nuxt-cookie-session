@@ -38,13 +38,13 @@
   "devDependencies": {
     "@nuxt/module-builder": "^0.2.1",
     "@nuxt/schema": "3.3.2",
-    "@nuxt/test-utils-edge": "3.3.3-28003235.99ac1d59",
+    "@nuxt/test-utils-edge": "3.3.3-28005683.5785908e",
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@types/node": "^18.15.11",
     "es-cookie": "^1.4.0",
     "eslint": "^8.37.0",
     "nuxt": "3.3.2",
-    "typescript": "^5.0.2",
+    "typescript": "^5.0.3",
     "vitest": "^0.29.8",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
