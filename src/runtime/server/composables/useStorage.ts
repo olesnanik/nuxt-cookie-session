@@ -1,8 +1,9 @@
 import { prefixStorage } from 'unstorage'
 import { useCookieSessionRuntimeConfig } from './useRuntimeConfig'
+/* eslint-disable */
 // @ts-ignore
-// eslint-disable-next-line import/named
 import { useStorage } from '#imports'
+/* eslint-enable */
 
 export function useCookieSessionStorage () {
   let storage = useStorage()
