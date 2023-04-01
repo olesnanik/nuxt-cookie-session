@@ -18,7 +18,8 @@
     "dist"
   ],
   "scripts": {
-    "release": "rm -rf dist && npm run dev:prepare && npm run lint && npm run test && npm run prepack && npm publish && git push --follow-tags",
+    "pre-release": "rm -rf dist && npm run dev:prepare && npm run lint && npm run typecheck && npm run test",
+    "release": "npm run prepack && npm publish && git push --follow-tags",
     "prepack": "nuxt-module-build",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
