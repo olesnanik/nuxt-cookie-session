@@ -1,5 +1,12 @@
 import { defu } from 'defu'
-import { defineNuxtModule, addPlugin, addImportsDir, addServerHandler, useLogger, createResolver } from '@nuxt/kit'
+import {
+  defineNuxtModule,
+  addPlugin,
+  addImportsDir,
+  addServerHandler,
+  useLogger,
+  createResolver
+} from '@nuxt/kit'
 import { ModuleOptions, CookieSessionRuntimeConfig } from './types'
 import { CONFIG_KEY, getDefaultModuleOptions, LOG_MESSAGES } from './config'
 
@@ -40,6 +47,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     addImportsDir(resolve('./runtime/server/composables'))
     addImportsDir(resolve('./runtime/composables'))
+    addImportsDir(resolve('./runtime/utils'))
 
     if (runtimeOptions.api.enable) {
       ['GET', 'PATCH', 'PUT', 'DELETE'].map(method => addServerHandler({
