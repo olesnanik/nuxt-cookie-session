@@ -1,5 +1,7 @@
 import { prefixStorage } from 'unstorage'
 import { useCookieSessionRuntimeConfig } from './useRuntimeConfig'
+// @ts-ignore
+// eslint-disable-next-line import/named
 import { useStorage } from '#imports'
 
 export function useCookieSessionStorage () {

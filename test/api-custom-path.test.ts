@@ -5,6 +5,7 @@ import { DEFAULT_API_PATH } from '../src/config'
 import CookieSessionModule from '..'
 
 describe('api custom path', async () => {
+  // @ts-ignore
   await setup({
     rootDir: fileURLToPath(new URL('./fixture', import.meta.url)),
     nuxtConfig: {
