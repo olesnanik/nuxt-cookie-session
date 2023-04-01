@@ -1,5 +1,6 @@
 import { prefixStorage } from 'unstorage'
 import { useCookieSessionRuntimeConfig } from './useRuntimeConfig'
+import { useStorage } from '#imports'
 
 export function useCookieSessionStorage () {
   let storage = useStorage()
