@@ -1,10 +1,13 @@
 {
   "name": "nuxt-cookie-session",
   "version": "1.0.0",
+  "description": "Nuxt module for storing of user data on server identified by hashed id in cookies.",
+  "repository": "https://github.com/olesnanik/nuxt-cookie-session",
   "license": "MIT",
   "type": "module",
   "exports": {
     ".": {
+      "types": "./dist/types.d.ts",
       "import": "./dist/module.mjs",
       "require": "./dist/module.cjs"
     }
@@ -15,11 +18,12 @@
     "dist"
   ],
   "scripts": {
+    "release": "npm run lint && npm run test && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "prepack": "nuxt-module-build",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build --stub && nuxi prepare playground",
-    "test": "pnpm vitest run --threads false --watch false --segfault-retry=3",
+    "test": "vitest run --threads false --watch false --segfault-retry=3",
     "lint": "eslint --ext .ts,.vue --max-warnings=0 .",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
