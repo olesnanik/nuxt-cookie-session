@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useState } from '#app'
-import { useCookieSession } from '../src/runtime/composables/useCookieSession'
+import { useCookieSession } from '#imports'
 
 const { data, patchData, putData, deleteSession, getData } = useCookieSession()
 data.value = useState('appCookieSession', () => data).value

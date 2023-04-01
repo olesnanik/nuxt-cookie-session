@@ -1,7 +1,5 @@
-import { resolve } from 'path'
-import { fileURLToPath } from 'url'
 import { defu } from 'defu'
-import { defineNuxtModule, addPlugin, addImportsDir, addServerHandler, useLogger } from '@nuxt/kit'
+import { defineNuxtModule, addPlugin, addImportsDir, addServerHandler, useLogger, createResolver } from '@nuxt/kit'
 import { ModuleOptions, CookieSessionRuntimeConfig } from './types'
 import { CONFIG_KEY, getDefaultModuleOptions, LOG_MESSAGES } from './config'
 
@@ -33,20 +31,19 @@ export default defineNuxtModule<ModuleOptions>({
       api: runtimeOptions.api
     }
 
-    const runtimeDir = fileURLToPath(new URL('./runtime', import.meta.url))
-    nuxt.options.build.transpile.push(runtimeDir)
+    const { resolve } = createResolver(import.meta.url)
 
-    addPlugin(resolve(runtimeDir, 'plugin'))
+    addPlugin(resolve('./runtime/plugin'))
 
-    const contextMiddleware = resolve(runtimeDir, 'server/middleware/context')
+    const contextMiddleware = resolve('./runtime/server/middleware/context')
     nuxt.options.serverHandlers.unshift({ middleware: true, handler: contextMiddleware })
 
-    addImportsDir(resolve(runtimeDir, 'server/composables'))
-    addImportsDir(resolve(runtimeDir, 'composables'))
+    addImportsDir(resolve('./runtime/server/composables'))
+    addImportsDir(resolve('./runtime/composables'))
 
     if (runtimeOptions.api.enable) {
       ['GET', 'PATCH', 'PUT', 'DELETE'].map(method => addServerHandler({
-        handler: resolve(runtimeDir, 'server/api/cookie-session.' + method.toLowerCase()),
+        handler: resolve('./runtime/server/api/cookie-session.' + method.toLowerCase()),
         route: runtimeOptions.api.path
       }))
     }
