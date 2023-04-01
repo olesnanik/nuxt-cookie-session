@@ -2,7 +2,6 @@ import type { HTTPMethod } from 'h3'
 import { defineNuxtPlugin, useRequestEvent, useRuntimeConfig, showError } from '#app'
 import { ref } from 'vue'
 import type { CookieSessionData } from '../types'
-import { LOG_MESSAGES } from '../config'
 
 export default defineNuxtPlugin(() => {
   const event = useRequestEvent()
@@ -11,7 +10,7 @@ export default defineNuxtPlugin(() => {
   const { cookieSession: { api: { enable, path } } } = useRuntimeConfig()
   const handleRequestAndUpdateData = async (_request: () => ReturnType<typeof request>) => {
     if (!enable) {
-      showError(LOG_MESSAGES.disabledApi)
+      showError('Cookie session public API endpoints are disabled. Update config to enable it. `{ cookieSession: { api: enable: true } }`')
       return Promise.resolve({})
     }
 

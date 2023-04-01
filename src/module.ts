@@ -34,7 +34,6 @@ export default defineNuxtModule<ModuleOptions>({
     const { resolve } = createResolver(import.meta.url)
 
     addPlugin(resolve('./runtime/plugin'))
-    addPlugin(resolve('./runtime/config'))
 
     const contextMiddleware = resolve('./runtime/server/middleware/context')
     nuxt.options.serverHandlers.unshift({ middleware: true, handler: contextMiddleware })
