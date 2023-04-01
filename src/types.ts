@@ -1,5 +1,4 @@
 import type { Ref } from 'vue'
-import type { CookieSerializeOptions } from 'cookie-es'
 
 export interface CookieSessionData {
   [key: string]: any
@@ -20,7 +19,15 @@ declare module 'h3' {
   }
 }
 
-export type CookieOptions = Pick<CookieSerializeOptions, 'domain' | 'httpOnly' | 'maxAge' | 'path' | 'sameSite' | 'secure'>
+export type CookieOptions = {
+  domain?: string
+  expires?: Date
+  httpOnly?: boolean
+  maxAge?: number
+  path?: string
+  sameSite?: true | false | 'lax' | 'strict' | 'none'
+  secure?: boolean
+}
 
 export type StorageOptions = {
   id: string
