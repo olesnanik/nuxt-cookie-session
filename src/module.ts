@@ -47,7 +47,6 @@ export default defineNuxtModule<ModuleOptions>({
 
     addImportsDir(resolve('./runtime/server/composables'))
     addImportsDir(resolve('./runtime/composables'))
-    addImportsDir(resolve('./runtime/utils'))
 
     if (runtimeOptions.api.enable) {
       ['GET', 'PATCH', 'PUT', 'DELETE'].map(method => addServerHandler({
