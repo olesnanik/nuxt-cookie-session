@@ -45,7 +45,6 @@ export default defineNuxtModule<ModuleOptions>({
     const contextMiddleware = resolve('./runtime/server/middleware/context')
     nuxt.options.serverHandlers.unshift({ middleware: true, handler: contextMiddleware })
 
-    addImportsDir(resolve('./runtime/server/composables'))
     addImportsDir(resolve('./runtime/composables'))
 
     if (runtimeOptions.api.enable) {
